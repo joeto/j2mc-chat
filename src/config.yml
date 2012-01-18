@@ -1,1 +1,1 @@
-message.format: (%displayname) %message
+message.format: "*blue*(*playernamecolor*%displayname*blue*)*white*%message"

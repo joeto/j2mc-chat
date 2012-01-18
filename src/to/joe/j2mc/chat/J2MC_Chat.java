@@ -1,5 +1,6 @@
 package to.joe.j2mc.chat;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -11,6 +12,7 @@ import to.joe.j2mc.core.J2MC_Manager;
 public class J2MC_Chat extends JavaPlugin{
 
 	private String message_format;
+	public ChatFunctions ChatFunctions = new ChatFunctions();
 
 	@Override
 	public void onDisable() {
@@ -33,8 +35,13 @@ public class J2MC_Chat extends JavaPlugin{
 	        if (event.isCancelled()) {
 	            return;
 	        }
+	        ChatColor PlayerNameColor = ChatColor.GOLD; //TODO: Replace with actual player's name colour.
 	        String message = message_format;
+	        message = message.replace("*playernamecolor*", PlayerNameColor.toString());
+	        J2MC_Manager.getLog().info(message);
 	        message = message.replace("%message", "%2$s").replace("%displayname", "%1$s");
+	        message = ChatFunctions.SubstituteColors(message);
+	        J2MC_Manager.getLog().info(message);
 	        event.setFormat(message);
 	    }
 	}
