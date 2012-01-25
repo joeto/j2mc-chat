@@ -4,7 +4,28 @@ import org.bukkit.ChatColor;
 
 public class ChatFunctions {
 
-    public ChatColor toColor(int input) {
+    public static String SubstituteColors(String input) {
+        String output = null;
+        output = input.replace("*black*", ChatColor.BLACK.toString());
+        output = output.replace("*dblue*", ChatColor.DARK_BLUE.toString());
+        output = output.replace("*dgreen*", ChatColor.DARK_GREEN.toString());
+        output = output.replace("*darkaqua*", ChatColor.DARK_AQUA.toString());
+        output = output.replace("*dred*", ChatColor.DARK_RED.toString());
+        output = output.replace("*dpurple*", ChatColor.DARK_PURPLE.toString());
+        output = output.replace("*gold*", ChatColor.GOLD.toString());
+        output = output.replace("*gray*", ChatColor.GRAY.toString());
+        output = output.replace("*dgray*", ChatColor.DARK_GRAY.toString());
+        output = output.replace("*blue*", ChatColor.BLUE.toString());
+        output = output.replace("*green*", ChatColor.GREEN.toString());
+        output = output.replace("*aqua*", ChatColor.AQUA.toString());
+        output = output.replace("*red*", ChatColor.RED.toString());
+        output = output.replace("*lpurple*", ChatColor.LIGHT_PURPLE.toString());
+        output = output.replace("*yellow*", ChatColor.YELLOW.toString());
+        output = output.replace("*white*", ChatColor.WHITE.toString());
+        return output;
+    }
+
+    public static ChatColor toColor(int input) {
         switch (input) {
             case 0:
                 return ChatColor.BLACK;
@@ -41,26 +62,5 @@ public class ChatFunctions {
         }
         return null;
     }
-    
-    public String SubstituteColors(String input){
-    	String output = null;
-    	output = input.replace("*black*", ChatColor.BLACK.toString());
-    	output = output.replace("*dblue*", ChatColor.DARK_BLUE.toString());
-    	output = output.replace("*dgreen*", ChatColor.DARK_GREEN.toString());
-    	output = output.replace("*darkaqua*", ChatColor.DARK_AQUA.toString());
-    	output = output.replace("*dred*", ChatColor.DARK_RED.toString());
-    	output = output.replace("*dpurple*", ChatColor.DARK_PURPLE.toString());
-    	output = output.replace("*gold*", ChatColor.GOLD.toString());
-    	output = output.replace("*gray*", ChatColor.GRAY.toString());
-    	output = output.replace("*dgray*", ChatColor.DARK_GRAY.toString());
-    	output = output.replace("*blue*", ChatColor.BLUE.toString());
-    	output = output.replace("*green*", ChatColor.GREEN.toString());
-    	output = output.replace("*aqua*", ChatColor.AQUA.toString());
-    	output = output.replace("*red*", ChatColor.RED.toString());
-    	output = output.replace("*lpurple*", ChatColor.LIGHT_PURPLE.toString());
-    	output = output.replace("*yellow*", ChatColor.YELLOW.toString());
-    	output = output.replace("*white*", ChatColor.WHITE.toString());
-    	return output;
-    }
-	
+
 }
