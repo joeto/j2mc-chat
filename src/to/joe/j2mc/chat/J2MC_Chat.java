@@ -3,6 +3,7 @@ package to.joe.j2mc.chat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import to.joe.j2mc.chat.command.MeCommand;
 import to.joe.j2mc.core.J2MC_Manager;
 
 public class J2MC_Chat extends JavaPlugin implements Listener {
@@ -26,10 +28,11 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         this.getServer().getPluginManager().registerEvents(this, this);
-        this.getLogger().info("Chat module enabled");
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
         this.message_format = this.getConfig().getString("message.format");
+        this.getCommand("me").setExecutor(new MeCommand(this));
+        this.getLogger().info("Chat module enabled");
     }
 
     @EventHandler
@@ -37,11 +40,14 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         if (event.isCancelled()) {
             return;
         }
+        for(Player plr : (new HashSet<Player>(event.getRecipients()))){
+        	if(!plr.hasPermission("j2mc-chat.recieve")){
+        		event.getRecipients().remove(plr);
+        	}
+        }
         String message = this.message_format;
-        this.getLogger().info(message);
         message = message.replace("%message", "%2$s").replace("%displayname", "%1$s");
         message = ChatFunctions.SubstituteColors(message);
-        this.getLogger().info(message);
         event.setFormat(message);
     }
     
@@ -52,14 +58,19 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
 		PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("SELECT color FROM j2users WHERE name=?");
 		ps.setString(1, player.getName());
 		ResultSet rs = ps.executeQuery();
-		rs.next();
-		int playercolor = rs.getInt("color");
-		ChatColor color = ChatFunctions.toColor(playercolor);
-		player.setDisplayName(color.toString() + player.getName());
+		if(rs.next()){
+			int playercolor = rs.getInt("color");
+			ChatColor color = ChatFunctions.toColor(playercolor);
+			player.setDisplayName(color.toString() + player.getName());
+		}else{
+			player.setDisplayName(ChatColor.GREEN + player.getName());
+		}
 		}catch(SQLException e){
 			e.printStackTrace();
+			player.setDisplayName(ChatColor.GREEN + player.getName());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			player.setDisplayName(ChatColor.GREEN + player.getName());
 		}
     }
 	

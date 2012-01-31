@@ -4,3 +4,14 @@ version: 0.0prealpha
 website: http://forums.joe.to
 author: J2 Minecraft Plugin Team
 description: Chat formatting module
+commands:
+  me:
+    description: emote your feelings
+    usage: /me message
+permissions:
+  j2mc-chat.recieve:
+    default: true
+    description: lets user see chat
+  j2mc-chat.recieveMe:
+    default: true
+    description: lets user see /me events
