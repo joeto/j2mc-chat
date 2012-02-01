@@ -8,6 +8,12 @@ commands:
   me:
     description: emote your feelings
     usage: /me message
+  msg:
+    description: private message your friends!
+    usage: /msg player message
+  tell:
+    description: ditto of /msg
+    usage: /tell player message
 permissions:
   j2mc-chat.recieve:
     default: true

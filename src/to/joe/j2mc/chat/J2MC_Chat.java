@@ -14,11 +14,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import to.joe.j2mc.chat.command.MeCommand;
+import to.joe.j2mc.chat.command.MessageCommand;
 import to.joe.j2mc.core.J2MC_Manager;
 
 public class J2MC_Chat extends JavaPlugin implements Listener {
 
     private String message_format;
+    public String privatemessage_format;
 
     @Override
     public void onDisable() {
@@ -30,8 +32,11 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(this, this);
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
-        this.message_format = this.getConfig().getString("message.format");
+        this.message_format = ChatFunctions.SubstituteColors(this.getConfig().getString("message.format"));
+        this.privatemessage_format = ChatFunctions.SubstituteColors(this.getConfig().getString("privatemessage.format"));
         this.getCommand("me").setExecutor(new MeCommand(this));
+        this.getCommand("msg").setExecutor(new MessageCommand(this));
+        this.getCommand("tell").setExecutor(new MessageCommand(this));
         this.getLogger().info("Chat module enabled");
     }
 
@@ -47,7 +52,6 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         }
         String message = this.message_format;
         message = message.replace("%message", "%2$s").replace("%displayname", "%1$s");
-        message = ChatFunctions.SubstituteColors(message);
         event.setFormat(message);
     }
     
