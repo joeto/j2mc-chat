@@ -4,8 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import to.joe.j2mc.chat.ChatFunctions;
 import to.joe.j2mc.chat.J2MC_Chat;
+import to.joe.j2mc.core.J2MC_Core;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
@@ -36,7 +36,7 @@ public class MessageCommand extends MasterCommand{
             	player.sendMessage(ChatColor.RED + "I think you're lonely.");
             	//return;
             }
-            String message = J2MC_Manager.getCore().combineSplit(1, args, " ");
+            String message = J2MC_Core.combineSplit(1, args, " ");
             String finalmessage = plugin.privatemessage_format;
             finalmessage = finalmessage.replace("%from", player.getDisplayName());
             finalmessage = finalmessage.replace("%to", to.getDisplayName());
