@@ -45,37 +45,37 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         if (event.isCancelled()) {
             return;
         }
-        for(Player plr : (new HashSet<Player>(event.getRecipients()))){
-        	if(!plr.hasPermission("j2mc-chat.recieve")){
-        		event.getRecipients().remove(plr);
-        	}
+        for (final Player plr : (new HashSet<Player>(event.getRecipients()))) {
+            if (!plr.hasPermission("j2mc-chat.recieve")) {
+                event.getRecipients().remove(plr);
+            }
         }
         String message = this.message_format;
         message = message.replace("%message", "%2$s").replace("%displayname", "%1$s");
         event.setFormat(message);
     }
-    
+
     @EventHandler
-	public void OnPlayerJoin(PlayerJoinEvent event){
-		Player player = event.getPlayer();
-		try{
-		PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("SELECT color FROM j2users WHERE name=?");
-		ps.setString(1, player.getName());
-		ResultSet rs = ps.executeQuery();
-		if(rs.next()){
-			int playercolor = rs.getInt("color");
-			ChatColor color = ChatFunctions.toColor(playercolor);
-			player.setDisplayName(color.toString() + player.getName());
-		}else{
-			player.setDisplayName(ChatColor.GREEN + player.getName());
-		}
-		}catch(SQLException e){
-			e.printStackTrace();
-			player.setDisplayName(ChatColor.GREEN + player.getName());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			player.setDisplayName(ChatColor.GREEN + player.getName());
-		}
+    public void OnPlayerJoin(PlayerJoinEvent event) {
+        final Player player = event.getPlayer();
+        try {
+            final PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("SELECT color FROM j2users WHERE name=?");
+            ps.setString(1, player.getName());
+            final ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                final int playercolor = rs.getInt("color");
+                final ChatColor color = ChatFunctions.toColor(playercolor);
+                player.setDisplayName(color.toString() + player.getName());
+            } else {
+                player.setDisplayName(ChatColor.GREEN + player.getName());
+            }
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            player.setDisplayName(ChatColor.GREEN + player.getName());
+        } catch (final ClassNotFoundException e) {
+            e.printStackTrace();
+            player.setDisplayName(ChatColor.GREEN + player.getName());
+        }
     }
-	
+
 }
