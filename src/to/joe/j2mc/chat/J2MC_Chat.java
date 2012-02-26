@@ -59,7 +59,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     public void OnPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         try {
-            final PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("SELECT color FROM j2users WHERE name=?");
+            final PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("SELECT color FROM users WHERE name=?");
             ps.setString(1, player.getName());
             final ResultSet rs = ps.executeQuery();
             if (rs.next()) {
