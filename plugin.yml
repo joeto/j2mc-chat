@@ -21,3 +21,6 @@ permissions:
   j2mc-chat.recieveMe:
     default: true
     description: lets user see /me events
+  j2mc-chat.mute:
+    default: false
+    description: mutes player
