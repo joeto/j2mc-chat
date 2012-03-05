@@ -41,15 +41,6 @@ public class MessageCommand extends MasterCommand {
             finalmessage = finalmessage.replace("%from", player.getDisplayName());
             finalmessage = finalmessage.replace("%to", to.getDisplayName());
             finalmessage = finalmessage.replace("%message", message);
-            if (player.hasPermission("j2mc-chat.mute")) {
-                player.sendMessage(ChatColor.RED + "You are muted");
-                for (final Player plr : J2MC_Manager.getVisibility().getOnlinePlayers(null)) {
-                    if (plr.hasPermission("j2mc-chat.admin.nsa")) {
-                        plr.sendMessage(ChatColor.YELLOW + "[Mute Blocked] " + finalmessage.replace(ChatColor.WHITE.toString(), ChatColor.AQUA.toString()));
-                    }
-                }
-                return;
-            }
             player.sendMessage(finalmessage);
             to.sendMessage(finalmessage);
             this.plugin.getLogger().info(finalmessage);
