@@ -51,6 +51,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
                     plr.sendMessage(ChatColor.YELLOW + "[Mute Blocked] " + event.getMessage());
                 }
             }
+            event.setCancelled(true);
             return;
         }
         for (final Player plr : (new HashSet<Player>(event.getRecipients()))) {
