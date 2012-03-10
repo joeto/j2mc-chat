@@ -24,3 +24,6 @@ permissions:
   j2mc-chat.mute:
     default: false
     description: mutes player
+  j2mc-chat.admin.nsa:
+    default: false 
+    description: NSA
