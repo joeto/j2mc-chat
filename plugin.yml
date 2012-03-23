@@ -1,6 +1,6 @@
 name: J2MC_Chat
 main: to.joe.j2mc.chat.J2MC_Chat
-version: 0.0prealpha
+version: 1.0
 website: http://forums.joe.to
 author: J2 Minecraft Plugin Team
 description: Chat formatting module
@@ -11,19 +11,14 @@ commands:
   msg:
     description: private message your friends!
     usage: /msg player message
-  tell:
-    description: ditto of /msg
-    usage: /tell player message
+    aliases: ['tell']
 permissions:
-  j2mc-chat.recieve:
+  j2mc.chat.recieve:
     default: true
     description: lets user see chat
-  j2mc-chat.recieveMe:
-    default: true
-    description: lets user see /me events
-  j2mc-chat.mute:
+  j2mc.chat.mute:
     default: false
     description: mutes player
-  j2mc-chat.admin.nsa:
+  j2mc.chat.admin.nsa:
     default: false 
     description: NSA

@@ -36,7 +36,6 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.privatemessage_format = ChatFunctions.SubstituteColors(this.getConfig().getString("privatemessage.format"));
         this.getCommand("me").setExecutor(new MeCommand(this));
         this.getCommand("msg").setExecutor(new MessageCommand(this));
-        this.getCommand("tell").setExecutor(new MessageCommand(this));
         this.getLogger().info("Chat module enabled");
     }
 
@@ -45,9 +44,9 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         if (event.isCancelled()) {
             return;
         }
-        if(event.getPlayer().hasPermission("j2mc-chat.mute")){
+        if(event.getPlayer().hasPermission("j2mc.chat.mute")){
             for (final Player plr : J2MC_Manager.getVisibility().getOnlinePlayers(null)) {
-                if (plr.hasPermission("j2mc-chat.admin.nsa")) {
+                if (plr.hasPermission("j2mc.chat.admin.nsa")) {
                     plr.sendMessage(ChatColor.YELLOW + "[Mute Blocked] " + event.getMessage());
                 }
             }
@@ -55,7 +54,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
             return;
         }
         for (final Player plr : (new HashSet<Player>(event.getRecipients()))) {
-            if (!plr.hasPermission("j2mc-chat.recieve")) {
+            if (!plr.hasPermission("j2mc.chat.recieve")) {
                 event.getRecipients().remove(plr);
             }
         }
