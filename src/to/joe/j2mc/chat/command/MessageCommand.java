@@ -9,6 +9,7 @@ import to.joe.j2mc.core.J2MC_Core;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
+import to.joe.j2mc.core.log.LogColors;
 
 public class MessageCommand extends MasterCommand {
     J2MC_Chat plugin;
@@ -43,7 +44,7 @@ public class MessageCommand extends MasterCommand {
             finalmessage = finalmessage.replace("%message", message);
             player.sendMessage(finalmessage);
             to.sendMessage(finalmessage);
-            this.plugin.getLogger().info(finalmessage);
+            this.plugin.getLogger().info(LogColors.process(finalmessage));
         }
     }
 
