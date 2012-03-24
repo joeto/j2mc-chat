@@ -36,6 +36,11 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.privatemessage_format = ChatFunctions.SubstituteColors(this.getConfig().getString("privatemessage.format"));
         this.getCommand("me").setExecutor(new MeCommand(this));
         this.getCommand("msg").setExecutor(new MessageCommand(this));
+        for(Player player:this.getServer().getOnlinePlayers()){
+            if(player!=null){
+                this.playerNameInitialize(player);
+            }
+        }
         this.getLogger().info("Chat module enabled");
     }
 
@@ -62,10 +67,10 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        this.onPlayerJoinEvent(player);
+        this.playerNameInitialize(player);
     }
 
-    public void onPlayerJoinEvent(Player player) {
+    public void playerNameInitialize(Player player) {
         try {
             final PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("SELECT color FROM users WHERE name=?");
             ps.setString(1, player.getName());
