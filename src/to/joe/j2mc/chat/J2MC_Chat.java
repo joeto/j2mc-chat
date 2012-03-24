@@ -45,7 +45,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
             return;
         }
         if (event.getPlayer().hasPermission("j2mc.chat.mute")) {
-            this.getServer().broadcast(ChatColor.YELLOW + "[Mute Blocked] " + event.getMessage(), "j2mc.chat.admin.nsa");
+            J2MC_Manager.getCore().adminAndLog(ChatColor.YELLOW + "[Mute Blocked] <"+event.getPlayer().getName()+">"+ChatColor.WHITE + event.getMessage());
             event.setCancelled(true);
             return;
         }
