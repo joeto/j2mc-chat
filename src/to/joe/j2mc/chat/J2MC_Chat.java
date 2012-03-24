@@ -39,13 +39,13 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.getLogger().info("Chat module enabled");
     }
 
-    @EventHandler(priority=EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(PlayerChatEvent event) {
         if (event.isCancelled()) {
             return;
         }
         if (event.getPlayer().hasPermission("j2mc.chat.mute")) {
-            J2MC_Manager.getCore().adminAndLog(ChatColor.YELLOW + "[Mute Blocked] <"+event.getPlayer().getName()+">"+ChatColor.WHITE + event.getMessage());
+            J2MC_Manager.getCore().adminAndLog(ChatColor.YELLOW + "[Mute Blocked] <" + event.getPlayer().getName() + ">" + ChatColor.WHITE + event.getMessage());
             event.setCancelled(true);
             return;
         }
@@ -62,6 +62,10 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
+        this.onPlayerJoinEvent(player);
+    }
+
+    public void onPlayerJoinEvent(Player player) {
         try {
             final PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("SELECT color FROM users WHERE name=?");
             ps.setString(1, player.getName());
