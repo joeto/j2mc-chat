@@ -2,12 +2,12 @@ package to.joe.j2mc.chat;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashSet;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -39,17 +39,13 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.getLogger().info("Chat module enabled");
     }
 
-    @EventHandler
+    @EventHandler(priority=EventPriority.LOWEST)
     public void onPlayerChat(PlayerChatEvent event) {
         if (event.isCancelled()) {
             return;
         }
-        if(event.getPlayer().hasPermission("j2mc.chat.mute")){
-            for (final Player plr : J2MC_Manager.getVisibility().getOnlinePlayers(null)) {
-                if (plr.hasPermission("j2mc.chat.admin.nsa")) {
-                    plr.sendMessage(ChatColor.YELLOW + "[Mute Blocked] " + event.getMessage());
-                }
-            }
+        if (event.getPlayer().hasPermission("j2mc.chat.mute")) {
+            this.getServer().broadcast(ChatColor.YELLOW + "[Mute Blocked] " + event.getMessage(), "j2mc.chat.admin.nsa");
             event.setCancelled(true);
             return;
         }
@@ -77,10 +73,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
             } else {
                 player.setDisplayName(ChatColor.GREEN + player.getName());
             }
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            player.setDisplayName(ChatColor.GREEN + player.getName());
-        } catch (final ClassNotFoundException e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             player.setDisplayName(ChatColor.GREEN + player.getName());
         }
