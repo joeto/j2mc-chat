@@ -12,6 +12,11 @@ commands:
     description: private message your friends!
     usage: /msg player message
     aliases: ['tell']
+  nsa:
+    description: The name's Bond. James Bond.
+    usage: /nsa
+    permission: j2mc.chat.admin.nsa.toggle
+    permission-message: ":frog6:"
 permissions:
   j2mc.chat.recieve:
     default: true
@@ -22,3 +27,5 @@ permissions:
   j2mc.chat.admin.nsa:
     default: false 
     description: NSA
+  j2mc.chat.admin.nsa.toggle:
+    description: nsa

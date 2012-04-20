@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import to.joe.j2mc.chat.command.MeCommand;
 import to.joe.j2mc.chat.command.MessageCommand;
+import to.joe.j2mc.chat.command.NSACommand;
 import to.joe.j2mc.core.J2MC_Manager;
 
 public class J2MC_Chat extends JavaPlugin implements Listener {
@@ -36,6 +37,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.privatemessage_format = ChatFunctions.SubstituteColors(this.getConfig().getString("privatemessage.format"));
         this.getCommand("me").setExecutor(new MeCommand(this));
         this.getCommand("msg").setExecutor(new MessageCommand(this));
+        this.getCommand("nsa").setExecutor(new NSACommand(this));
         for(Player player:this.getServer().getOnlinePlayers()){
             if(player!=null){
                 this.playerNameInitialize(player);
