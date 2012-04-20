@@ -29,3 +29,7 @@ permissions:
     description: NSA
   j2mc.chat.admin.nsa.toggle:
     description: nsa
+  j2mc.chat.admin:
+    description: access to admin commands
+    children:
+      j2mc.chat.admin.nsa.toggle: true
