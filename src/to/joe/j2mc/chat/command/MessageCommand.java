@@ -35,13 +35,19 @@ public class MessageCommand extends MasterCommand {
             }
             if (player.equals(to)) {
                 player.sendMessage(ChatColor.RED + "I think you're lonely.");
-                //return;
+                return;
             }
             final String message = J2MC_Core.combineSplit(1, args, " ");
             String finalmessage = this.plugin.privatemessage_format;
             finalmessage = finalmessage.replace("%from", player.getDisplayName());
             finalmessage = finalmessage.replace("%to", to.getDisplayName());
             finalmessage = finalmessage.replace("%message", message);
+            final String nsamessage = ChatColor.DARK_AQUA + "[NSA] " + finalmessage;
+            for (Player plr : plugin.getServer().getOnlinePlayers()) {
+                if (plr != null && plr.hasPermission("j2mc.chat.admin.nsa") && (!plr.equals(player) || !plr.equals(to))) {
+                    plr.sendMessage(nsamessage);
+                }
+            }
             player.sendMessage(finalmessage);
             to.sendMessage(finalmessage);
             this.plugin.getLogger().info(LogColors.process(finalmessage));
