@@ -17,6 +17,7 @@ import to.joe.j2mc.chat.command.MeCommand;
 import to.joe.j2mc.chat.command.MessageCommand;
 import to.joe.j2mc.chat.command.NSACommand;
 import to.joe.j2mc.core.J2MC_Manager;
+import to.joe.j2mc.core.event.MessageEvent;
 
 public class J2MC_Chat extends JavaPlugin implements Listener {
 
@@ -70,6 +71,13 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         this.playerNameInitialize(player);
+    }
+    
+    @EventHandler
+    public void onIRCMessageEvent(MessageEvent event) {
+        if(event.targetting("RESTORECOLOUR")){
+            this.playerNameInitialize(this.getServer().getPlayer(event.getMessage()));
+        }
     }
 
     public void playerNameInitialize(Player player) {
