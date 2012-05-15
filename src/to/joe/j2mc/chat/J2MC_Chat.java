@@ -39,9 +39,11 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.getCommand("me").setExecutor(new MeCommand(this));
         this.getCommand("msg").setExecutor(new MessageCommand(this));
         this.getCommand("nsa").setExecutor(new NSACommand(this));
-        for(Player player:this.getServer().getOnlinePlayers()){
-            if(player!=null){
-                this.playerNameInitialize(player);
+        if (this.getConfig().getBoolean("enableformatinjection")) {
+            for (Player player : this.getServer().getOnlinePlayers()) {
+                if (player != null) {
+                    this.playerNameInitialize(player);
+                }
             }
         }
         this.getLogger().info("Chat module enabled");
@@ -57,26 +59,32 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
             event.setCancelled(true);
             return;
         }
-        for (final Player plr : (new HashSet<Player>(event.getRecipients()))) {
-            if (!plr.hasPermission("j2mc.chat.recieve")) {
-                event.getRecipients().remove(plr);
+        if (this.getConfig().getBoolean("enableformatinjection")) {
+            for (final Player plr : (new HashSet<Player>(event.getRecipients()))) {
+                if (!plr.hasPermission("j2mc.chat.recieve")) {
+                    event.getRecipients().remove(plr);
+                }
             }
+            String message = this.message_format;
+            message = message.replace("%message", "%2$s").replace("%displayname", "%1$s");
+            event.setFormat(message);
         }
-        String message = this.message_format;
-        message = message.replace("%message", "%2$s").replace("%displayname", "%1$s");
-        event.setFormat(message);
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        this.playerNameInitialize(player);
+        if (this.getConfig().getBoolean("enableformatinjection")) {
+            this.playerNameInitialize(player);
+        }
     }
-    
+
     @EventHandler
     public void onIRCMessageEvent(MessageEvent event) {
-        if(event.targetting("RESTORECOLOUR")){
-            this.playerNameInitialize(this.getServer().getPlayer(event.getMessage()));
+        if (this.getConfig().getBoolean("enableformatinjection")) {
+            if (event.targetting("RESTORECOLOUR")) {
+                this.playerNameInitialize(this.getServer().getPlayer(event.getMessage()));
+            }
         }
     }
 

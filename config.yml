@@ -1,2 +1,3 @@
 message.format: "*blue*(%displayname*blue*) *white*%message"
 privatemessage.format: "*blue*(%from*dgray*->%to*blue*) *white*%message"
+enableformatinjection: true
