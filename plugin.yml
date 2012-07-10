@@ -17,6 +17,11 @@ commands:
     usage: /nsa
     permission: j2mc.chat.admin.nsa.toggle
     permission-message: ":frog6:"
+  mute:
+    description: Mutes another player
+    usage: /mute player
+    permission: j2mc.chat.admin.mute
+    permission-message: "Nope.avi"
 permissions:
   j2mc.chat.recieve:
     default: true
@@ -29,7 +34,10 @@ permissions:
     description: NSA
   j2mc.chat.admin.nsa.toggle:
     description: nsa
+  j2mc.chat.admin.mute:
+    description: mute
   j2mc.chat.admin:
     description: access to admin commands
     children:
       j2mc.chat.admin.nsa.toggle: true
+      j2mc.chat.admin.mute: true
