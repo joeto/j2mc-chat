@@ -23,7 +23,7 @@ public class MeCommand extends MasterCommand {
     public void exec(CommandSender sender, String commandName, String[] args, Player player, boolean isPlayer) {
         if (isPlayer && (args.length > 0)) {
             final String message = J2MC_Core.combineSplit(0, args, " ");
-            if (player.hasPermission("j2mc.chat.mute")) {
+            if (player.hasPermission("j2mc.chat.mute") || this.plugin.mutedPlayers.contains(player.getName())) {
                 Bukkit.broadcast(ChatColor.YELLOW + "[Mute Blocked] *" + player.getName() + message, "j2mc.chat.admin.nsa");
                 return;
             }
