@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import to.joe.j2mc.chat.command.MeCommand;
 import to.joe.j2mc.chat.command.MessageCommand;
 import to.joe.j2mc.chat.command.MuteCommand;
+import to.joe.j2mc.chat.command.MuteallCommand;
 import to.joe.j2mc.chat.command.NSACommand;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.event.MessageEvent;
@@ -25,6 +26,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     private String message_format;
     public String privatemessage_format;
     public HashSet<String> mutedPlayers;
+    public boolean everbodyMuted = false;
 
     @Override
     public void onDisable() {
@@ -42,6 +44,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.getCommand("msg").setExecutor(new MessageCommand(this));
         this.getCommand("nsa").setExecutor(new NSACommand(this));
         this.getCommand("mute").setExecutor(new MuteCommand(this));
+        this.getCommand("muteall").setExecutor(new MuteallCommand(this));
         if (this.getConfig().getBoolean("enableformatinjection")) {
             for (Player player : this.getServer().getOnlinePlayers()) {
                 if (player != null) {
@@ -58,8 +61,9 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         if (event.isCancelled()) {
             return;
         }
-        if (event.getPlayer().hasPermission("j2mc.chat.mute") || mutedPlayers.contains(event.getPlayer().getName())) {
-            J2MC_Manager.getCore().adminAndLog(ChatColor.YELLOW + "[Mute Blocked] <" + event.getPlayer().getName() + ">" + ChatColor.WHITE + event.getMessage());
+        if (event.getPlayer().hasPermission("j2mc.chat.mute") || (everbodyMuted && !event.getPlayer().hasPermission("j2mc.chat.admin.muteall.override"))) {
+            J2MC_Manager.getCore().adminAndLog(ChatColor.YELLOW + "[Mute Blocked] <" + event.getPlayer().getName() + "> " + ChatColor.WHITE + event.getMessage());
+            event.getPlayer().sendMessage(ChatColor.RED + "You're currently muted");
             event.setCancelled(true);
             return;
         }
@@ -80,6 +84,9 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         final Player player = event.getPlayer();
         if (this.getConfig().getBoolean("enableformatinjection")) {
             this.playerNameInitialize(player);
+        }
+        if (mutedPlayers.contains(player.getName())) {
+        	J2MC_Manager.getPermissions().addFlag(player, 'M');
         }
     }
 

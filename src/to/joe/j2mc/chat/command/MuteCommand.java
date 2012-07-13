@@ -32,10 +32,14 @@ public class MuteCommand extends MasterCommand {
             String n = target.getName();
             if (this.plugin.mutedPlayers.contains(n)) {
                 this.plugin.mutedPlayers.remove(n);
+                J2MC_Manager.getPermissions().delFlag(target, 'M');
                 J2MC_Manager.getCore().adminAndLog(ChatColor.RED + sender.getName() + " unmuted " + n);
+                target.sendMessage(ChatColor.RED + "You have been unmuted");
             } else {
                 this.plugin.mutedPlayers.add(n);
+                J2MC_Manager.getPermissions().addFlag(target, 'M');
                 J2MC_Manager.getCore().adminAndLog(ChatColor.RED + sender.getName() + " muted " + n);
+                target.sendMessage(ChatColor.RED + "You have been muted");
             }
         } else {
             sender.sendMessage(ChatColor.RED + "Usage: /mute <playername>");
