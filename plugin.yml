@@ -22,6 +22,11 @@ commands:
     usage: /mute player
     permission: j2mc.chat.admin.mute
     permission-message: "Nope.avi"
+  muteall:
+    description: Mutes all non admins
+    usage: /muteall
+    permission: j2mc.chat.admin.muteall
+    permission-message: "LOL NO"
 permissions:
   j2mc.chat.recieve:
     default: true
@@ -36,8 +41,14 @@ permissions:
     description: nsa
   j2mc.chat.admin.mute:
     description: mute
+  j2mc.chat.admin.muteall:
+    description: muteall
+  j2mc.chat.admin.muteall.override:
+    description: override muteall
   j2mc.chat.admin:
     description: access to admin commands
     children:
       j2mc.chat.admin.nsa.toggle: true
       j2mc.chat.admin.mute: true
+      j2mc.chat.admin.muteall: true
+      j2mc.chat.admin.muteall.override: true
