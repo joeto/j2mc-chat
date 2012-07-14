@@ -27,6 +27,11 @@ commands:
     usage: /muteall
     permission: j2mc.chat.admin.muteall
     permission-message: "LOL NO"
+  listmute:
+    description: Shows muted players
+    usage: /listmute
+    permission: j2mc.chat.admin.mute
+    permission-message: "No"
 permissions:
   j2mc.chat.recieve:
     default: true
