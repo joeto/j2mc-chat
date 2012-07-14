@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import to.joe.j2mc.chat.command.ListMuteCommand;
 import to.joe.j2mc.chat.command.MeCommand;
 import to.joe.j2mc.chat.command.MessageCommand;
 import to.joe.j2mc.chat.command.MuteCommand;
@@ -45,6 +46,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.getCommand("nsa").setExecutor(new NSACommand(this));
         this.getCommand("mute").setExecutor(new MuteCommand(this));
         this.getCommand("muteall").setExecutor(new MuteallCommand(this));
+        this.getCommand("listmute").setExecutor(new ListMuteCommand(this));
         if (this.getConfig().getBoolean("enableformatinjection")) {
             for (Player player : this.getServer().getOnlinePlayers()) {
                 if (player != null) {
