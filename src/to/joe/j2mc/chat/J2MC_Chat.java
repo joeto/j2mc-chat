@@ -2,7 +2,9 @@ package to.joe.j2mc.chat;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -19,6 +21,7 @@ import to.joe.j2mc.chat.command.MessageCommand;
 import to.joe.j2mc.chat.command.MuteCommand;
 import to.joe.j2mc.chat.command.MuteallCommand;
 import to.joe.j2mc.chat.command.NSACommand;
+import to.joe.j2mc.chat.command.ReplyCommand;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.event.MessageEvent;
 
@@ -28,6 +31,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     public String privatemessage_format;
     public HashSet<String> mutedPlayers;
     public boolean everbodyMuted = false;
+    public Map<String, String> lastMessage = new HashMap<String, String>();
 
     @Override
     public void onDisable() {
@@ -47,6 +51,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.getCommand("mute").setExecutor(new MuteCommand(this));
         this.getCommand("muteall").setExecutor(new MuteallCommand(this));
         this.getCommand("listmute").setExecutor(new ListMuteCommand(this));
+        this.getCommand("reply").setExecutor(new ReplyCommand(this));
         if (this.getConfig().getBoolean("enableformatinjection")) {
             for (Player player : this.getServer().getOnlinePlayers()) {
                 if (player != null) {

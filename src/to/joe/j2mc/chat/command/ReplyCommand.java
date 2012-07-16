@@ -6,15 +6,14 @@ import org.bukkit.entity.Player;
 
 import to.joe.j2mc.chat.J2MC_Chat;
 import to.joe.j2mc.core.J2MC_Core;
-import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
-import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
 import to.joe.j2mc.core.log.LogColors;
 
-public class MessageCommand extends MasterCommand {
+public class ReplyCommand extends MasterCommand {
+
     J2MC_Chat plugin;
 
-    public MessageCommand(J2MC_Chat j2mc_chat) {
+    public ReplyCommand(J2MC_Chat j2mc_chat) {
         super(j2mc_chat);
         this.plugin = j2mc_chat;
     }
@@ -22,22 +21,16 @@ public class MessageCommand extends MasterCommand {
     @Override
     public void exec(CommandSender sender, String commandName, String[] args, Player player, boolean isPlayer) {
         if (isPlayer) {
-            if (args.length < 2) {
-                player.sendMessage(ChatColor.RED + "Correct usage: /msg player message");
+            if (!this.plugin.lastMessage.containsKey(player.getName())) {
+                sender.sendMessage(ChatColor.RED + "No one has messaged you anything. Forever alone </3");
                 return;
             }
-            Player to;
-            try {
-                to = J2MC_Manager.getVisibility().getPlayer(args[0], player);
-            } catch (final BadPlayerMatchException e) {
-                player.sendMessage(ChatColor.RED + e.getMessage());
+            Player to = this.plugin.getServer().getPlayerExact(this.plugin.lastMessage.get(player.getName()));
+            if (to == null || !player.canSee(to)) {
+                sender.sendMessage(ChatColor.RED + this.plugin.lastMessage.get(player.getName()) + " is no longer online :(");
                 return;
             }
-            if (player.equals(to)) {
-                player.sendMessage(ChatColor.RED + "I think you're lonely.");
-                return;
-            }
-            final String message = J2MC_Core.combineSplit(1, args, " ");
+            final String message = J2MC_Core.combineSplit(0, args, " ");
             String finalmessage = this.plugin.privatemessage_format;
             finalmessage = finalmessage.replace("%from", player.getDisplayName());
             finalmessage = finalmessage.replace("%to", to.getDisplayName());

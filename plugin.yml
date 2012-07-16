@@ -32,6 +32,10 @@ commands:
     usage: /listmute
     permission: j2mc.chat.admin.mute
     permission-message: "No"
+  reply:
+    description: Replies to last message
+    usage: /reply message
+    aliases: ['rep']
 permissions:
   j2mc.chat.recieve:
     default: true
