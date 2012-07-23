@@ -22,6 +22,7 @@ import to.joe.j2mc.chat.command.MuteCommand;
 import to.joe.j2mc.chat.command.MuteallCommand;
 import to.joe.j2mc.chat.command.NSACommand;
 import to.joe.j2mc.chat.command.ReplyCommand;
+import to.joe.j2mc.chat.command.ShushCommand;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.event.MessageEvent;
 
@@ -52,6 +53,10 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.getCommand("muteall").setExecutor(new MuteallCommand(this));
         this.getCommand("listmute").setExecutor(new ListMuteCommand(this));
         this.getCommand("reply").setExecutor(new ReplyCommand(this));
+        this.getCommand("shush").setExecutor(new ShushCommand(this));
+        J2MC_Manager.getPermissions().addFlagPermissionRelation("j2mc.chat.mute", 'M', true);
+        J2MC_Manager.getPermissions().addFlagPermissionRelation("j2mc.chat.receive", 'S', false);
+        J2MC_Manager.getPermissions().addFlagPermissionRelation("j2mc.chat.admin.nsa", 'N', true);
         if (this.getConfig().getBoolean("enableformatinjection")) {
             for (Player player : this.getServer().getOnlinePlayers()) {
                 if (player != null) {
@@ -76,7 +81,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         }
         if (this.getConfig().getBoolean("enableformatinjection")) {
             for (final Player plr : (new HashSet<Player>(event.getRecipients()))) {
-                if (!plr.hasPermission("j2mc.chat.recieve")) {
+                if (!plr.hasPermission("j2mc.chat.receive")) {
                     event.getRecipients().remove(plr);
                 }
             }

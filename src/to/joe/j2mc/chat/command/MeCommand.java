@@ -28,7 +28,7 @@ public class MeCommand extends MasterCommand {
             	J2MC_Manager.getCore().adminAndLog(ChatColor.YELLOW + "[Mute Blocked] *" + player.getName() + " " + message);
                 return;
             }
-            Bukkit.broadcast("*" + player.getDisplayName() + " " + message, "j2mc.chat.recieve");
+            Bukkit.broadcast("*" + player.getDisplayName() + " " + message, "j2mc.chat.receive");
             this.plugin.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("GAMEMSG"), "*" + player.getName() + " " + message));
         }
     }

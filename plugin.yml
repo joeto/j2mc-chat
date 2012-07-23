@@ -36,8 +36,13 @@ commands:
     description: Replies to last message
     usage: /reply message
     aliases: ['rep']
+  shush:
+    description: Ignore chat
+    usage: /shush
+    permission: j2mc.chat.admin.shush
+    permission-message: "AWOOGA"
 permissions:
-  j2mc.chat.recieve:
+  j2mc.chat.receive:
     default: true
     description: lets user see chat
   j2mc.chat.mute:
@@ -54,6 +59,8 @@ permissions:
     description: muteall
   j2mc.chat.admin.muteall.override:
     description: override muteall
+  j2mc.chat.admin.shush:
+    description: ignore chat
   j2mc.chat.admin:
     description: access to admin commands
     children:
@@ -61,3 +68,4 @@ permissions:
       j2mc.chat.admin.mute: true
       j2mc.chat.admin.muteall: true
       j2mc.chat.admin.muteall.override: true
+      j2mc.chat.admin.shush: true
