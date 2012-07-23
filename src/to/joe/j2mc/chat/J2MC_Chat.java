@@ -98,7 +98,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
             this.playerNameInitialize(player);
         }
         if (mutedPlayers.contains(player.getName())) {
-        	J2MC_Manager.getPermissions().addFlag(player, 'M');
+            J2MC_Manager.getPermissions().addFlag(player, 'M');
         }
     }
 
