@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,6 +25,7 @@ import to.joe.j2mc.chat.command.ReplyCommand;
 import to.joe.j2mc.chat.command.ShushCommand;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.event.MessageEvent;
+import to.joe.j2mc.core.util.ThreadSafePermissionTracker;
 
 public class J2MC_Chat extends JavaPlugin implements Listener {
 
@@ -33,7 +34,10 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     public HashSet<String> mutedPlayers;
     public boolean everbodyMuted = false;
     public Map<String, String> lastMessage = new HashMap<String, String>();
-
+    private ThreadSafePermissionTracker muteTracker;
+    private ThreadSafePermissionTracker receiveTracker;
+    private ThreadSafePermissionTracker overrideTracker;
+    
     @Override
     public void onDisable() {
         this.getLogger().info("Chat module disabled");
@@ -46,6 +50,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.saveConfig();
         this.message_format = ChatFunctions.SubstituteColors(this.getConfig().getString("message.format"));
         this.privatemessage_format = ChatFunctions.SubstituteColors(this.getConfig().getString("privatemessage.format"));
+        
         this.getCommand("me").setExecutor(new MeCommand(this));
         this.getCommand("msg").setExecutor(new MessageCommand(this));
         this.getCommand("nsa").setExecutor(new NSACommand(this));
@@ -54,9 +59,15 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.getCommand("listmute").setExecutor(new ListMuteCommand(this));
         this.getCommand("reply").setExecutor(new ReplyCommand(this));
         this.getCommand("shush").setExecutor(new ShushCommand(this));
+        
         J2MC_Manager.getPermissions().addFlagPermissionRelation("j2mc.chat.mute", 'M', true);
         J2MC_Manager.getPermissions().addFlagPermissionRelation("j2mc.chat.receive", 'S', false);
         J2MC_Manager.getPermissions().addFlagPermissionRelation("j2mc.chat.admin.nsa", 'N', true);
+        
+        this.muteTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.mute");
+        this.overrideTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.admin.muteall.override");
+        this.receiveTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.receive");
+        
         if (this.getConfig().getBoolean("enableformatinjection")) {
             for (Player player : this.getServer().getOnlinePlayers()) {
                 if (player != null) {
@@ -69,11 +80,11 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerChat(PlayerChatEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (event.isCancelled()) {
             return;
         }
-        if (event.getPlayer().hasPermission("j2mc.chat.mute") || (everbodyMuted && !event.getPlayer().hasPermission("j2mc.chat.admin.muteall.override"))) {
+        if (this.muteTracker.hasPermission(event.getPlayer()) || (everbodyMuted && !this.overrideTracker.hasPermission(event.getPlayer()))) {
             J2MC_Manager.getCore().adminAndLog(ChatColor.YELLOW + "[Mute Blocked] <" + event.getPlayer().getName() + "> " + ChatColor.WHITE + event.getMessage());
             event.getPlayer().sendMessage(ChatColor.RED + "You're currently muted");
             event.setCancelled(true);
@@ -81,7 +92,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         }
         if (this.getConfig().getBoolean("enableformatinjection")) {
             for (final Player plr : (new HashSet<Player>(event.getRecipients()))) {
-                if (!plr.hasPermission("j2mc.chat.receive")) {
+                if (!this.receiveTracker.hasPermission(event.getPlayer())) {
                     event.getRecipients().remove(plr);
                 }
             }
