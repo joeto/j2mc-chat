@@ -100,6 +100,10 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
             message = message.replace("%message", "%2$s").replace("%displayname", "%1$s");
             event.setFormat(message);
         }
+        if (J2MC_Manager.getVisibility().isVanished(event.getPlayer())) {
+            event.setCancelled(true);
+            event.getPlayer().chat("/a " + event.getMessage());
+        }
     }
 
     @EventHandler
