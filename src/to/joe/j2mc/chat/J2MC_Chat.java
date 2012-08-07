@@ -25,7 +25,7 @@ import to.joe.j2mc.chat.command.ReplyCommand;
 import to.joe.j2mc.chat.command.ShushCommand;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.event.MessageEvent;
-import to.joe.j2mc.core.util.ThreadSafePermissionTracker;
+import to.joe.j2mc.core.permissions.ThreadSafePermissionTracker;
 
 public class J2MC_Chat extends JavaPlugin implements Listener {
 
