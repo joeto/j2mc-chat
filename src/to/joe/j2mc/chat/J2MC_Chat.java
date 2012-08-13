@@ -81,6 +81,10 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
+        if (J2MC_Manager.getVisibility().isVanished(event.getPlayer())) {
+            event.setCancelled(true);
+            event.getPlayer().chat("/a " + event.getMessage());
+        }
         if (event.isCancelled()) {
             return;
         }
@@ -99,10 +103,6 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
             String message = this.message_format;
             message = message.replace("%message", "%2$s").replace("%displayname", "%1$s");
             event.setFormat(message);
-        }
-        if (J2MC_Manager.getVisibility().isVanished(event.getPlayer())) {
-            event.setCancelled(true);
-            event.getPlayer().chat("/a " + event.getMessage());
         }
     }
 
