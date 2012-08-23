@@ -96,7 +96,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         }
         if (this.getConfig().getBoolean("enableformatinjection")) {
             for (final Player plr : (new HashSet<Player>(event.getRecipients()))) {
-                if (!this.receiveTracker.hasPermission(event.getPlayer())) {
+                if (!this.receiveTracker.hasPermission(plr.getPlayer())) {
                     event.getRecipients().remove(plr);
                 }
             }
