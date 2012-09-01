@@ -42,6 +42,9 @@ commands:
     permission: j2mc.chat.admin.shush
     permission-message: "AWOOGA"
 permissions:
+  j2mc.chat.send:
+    default: true
+    description: lets user chat
   j2mc.chat.receive:
     default: true
     description: lets user see chat

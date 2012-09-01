@@ -32,11 +32,12 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     private String message_format;
     public String privatemessage_format;
     public HashSet<String> mutedPlayers;
-    public boolean everbodyMuted = false;
+    public volatile boolean everbodyMuted = false;
     public Map<String, String> lastMessage = new HashMap<String, String>();
     private ThreadSafePermissionTracker muteTracker;
     private ThreadSafePermissionTracker receiveTracker;
     private ThreadSafePermissionTracker overrideTracker;
+    private ThreadSafePermissionTracker sendTracker;
     
     @Override
     public void onDisable() {
@@ -67,6 +68,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.muteTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.mute");
         this.overrideTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.admin.muteall.override");
         this.receiveTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.receive");
+        this.sendTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.send");
         
         if (this.getConfig().getBoolean("enableformatinjection")) {
             for (Player player : this.getServer().getOnlinePlayers()) {
@@ -84,6 +86,10 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         if (J2MC_Manager.getVisibility().isVanished(event.getPlayer())) {
             event.setCancelled(true);
             event.getPlayer().chat("/a " + event.getMessage());
+        }
+        if (!this.sendTracker.hasPermission(event.getPlayer())) {
+            event.setCancelled(true);
+            return;
         }
         if (event.isCancelled()) {
             return;
