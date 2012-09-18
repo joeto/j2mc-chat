@@ -1,3 +1,4 @@
-message.format: "*blue*(%displayname*blue*) *white*%message"
-privatemessage.format: "*blue*(%from*dgray*->%to*blue*) *white*%message"
+message.format: "*white*<%displayname*white*> *white*%message"
+privatemessage.format: "*white*<%from*dgray*->%to*white*> *white*%message"
 enableformatinjection: true
+redirectvanishchat: true

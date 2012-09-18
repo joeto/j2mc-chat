@@ -64,6 +64,8 @@ permissions:
     description: override muteall
   j2mc.chat.admin.shush:
     description: ignore chat
+  j2mc.chat.spectator:
+    description: Those without this permission will not receive chat from those with it
   j2mc.chat.admin:
     description: access to admin commands
     children:

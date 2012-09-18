@@ -38,7 +38,9 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     private ThreadSafePermissionTracker receiveTracker;
     private ThreadSafePermissionTracker overrideTracker;
     private ThreadSafePermissionTracker sendTracker;
-    
+    private ThreadSafePermissionTracker specTracker;
+    private boolean redirectVanishChat;
+
     @Override
     public void onDisable() {
         this.getLogger().info("Chat module disabled");
@@ -51,7 +53,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.saveConfig();
         this.message_format = ChatFunctions.SubstituteColors(this.getConfig().getString("message.format"));
         this.privatemessage_format = ChatFunctions.SubstituteColors(this.getConfig().getString("privatemessage.format"));
-        
+
         this.getCommand("me").setExecutor(new MeCommand(this));
         this.getCommand("msg").setExecutor(new MessageCommand(this));
         this.getCommand("nsa").setExecutor(new NSACommand(this));
@@ -60,16 +62,17 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.getCommand("listmute").setExecutor(new ListMuteCommand(this));
         this.getCommand("reply").setExecutor(new ReplyCommand(this));
         this.getCommand("shush").setExecutor(new ShushCommand(this));
-        
+
         J2MC_Manager.getPermissions().addFlagPermissionRelation("j2mc.chat.mute", 'M', true);
         J2MC_Manager.getPermissions().addFlagPermissionRelation("j2mc.chat.receive", 'S', false);
         J2MC_Manager.getPermissions().addFlagPermissionRelation("j2mc.chat.admin.nsa", 'N', true);
-        
+
         this.muteTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.mute");
         this.overrideTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.admin.muteall.override");
         this.receiveTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.receive");
         this.sendTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.send");
-        
+        this.specTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.spectator");
+
         if (this.getConfig().getBoolean("enableformatinjection")) {
             for (Player player : this.getServer().getOnlinePlayers()) {
                 if (player != null) {
@@ -77,13 +80,16 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
                 }
             }
         }
+
+        redirectVanishChat = getConfig().getBoolean("redirectvanishchat", true);
+
         this.mutedPlayers = new HashSet<String>();
         this.getLogger().info("Chat module enabled");
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        if (J2MC_Manager.getVisibility().isVanished(event.getPlayer())) {
+        if (J2MC_Manager.getVisibility().isVanished(event.getPlayer()) && redirectVanishChat) {
             event.setCancelled(true);
             event.getPlayer().chat("/a " + event.getMessage());
         }
@@ -108,6 +114,14 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
             }
             String message = this.message_format;
             message = message.replace("%message", "%2$s").replace("%displayname", "%1$s");
+            if (this.specTracker.hasPermission(event.getPlayer())) {
+                message = ChatColor.AQUA + "[SPEC]" + message;
+                for (final Player plr : (new HashSet<Player>(event.getRecipients()))) {
+                    if (!this.specTracker.hasPermission(plr)) {
+                        event.getRecipients().remove(plr);
+                    }
+                }
+            }
             event.setFormat(message);
         }
     }
