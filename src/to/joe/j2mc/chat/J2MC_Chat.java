@@ -40,6 +40,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     private ThreadSafePermissionTracker sendTracker;
     private ThreadSafePermissionTracker specTracker;
     private boolean redirectVanishChat;
+    private boolean spectatorChat;
 
     @Override
     public void onDisable() {
@@ -82,6 +83,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         }
 
         redirectVanishChat = getConfig().getBoolean("redirectvanishchat", true);
+        spectatorChat = getConfig().getBoolean("spectatorchat", false);
 
         this.mutedPlayers = new HashSet<String>();
         this.getLogger().info("Chat module enabled");
@@ -114,7 +116,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
             }
             String message = this.message_format;
             message = message.replace("%message", "%2$s").replace("%displayname", "%1$s");
-            if (this.specTracker.hasPermission(event.getPlayer())) {
+            if (spectatorChat && this.specTracker.hasPermission(event.getPlayer())) {
                 message = ChatColor.AQUA + "[SPEC]" + message;
                 for (final Player plr : (new HashSet<Player>(event.getRecipients()))) {
                     if (!this.specTracker.hasPermission(plr)) {

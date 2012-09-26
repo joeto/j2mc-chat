@@ -2,3 +2,4 @@ message.format: "*white*<%displayname*white*> *white*%message"
 privatemessage.format: "*white*<%from*dgray*->%to*white*> *white*%message"
 enableformatinjection: true
 redirectvanishchat: true
+spectatorchat: false
