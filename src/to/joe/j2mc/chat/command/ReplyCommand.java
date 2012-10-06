@@ -25,6 +25,10 @@ public class ReplyCommand extends MasterCommand {
                 sender.sendMessage(ChatColor.RED + "No one has messaged you anything. Forever alone </3");
                 return;
             }
+            if (args.length < 1) {
+                sender.sendMessage(ChatColor.RED + "Please enter a message (usage: /reply <message>)");
+                return;
+            }
             Player to = this.plugin.getServer().getPlayerExact(this.plugin.lastMessage.get(player.getName()));
             if (to == null || !player.canSee(to)) {
                 sender.sendMessage(ChatColor.RED + this.plugin.lastMessage.get(player.getName()) + " is no longer online :(");
