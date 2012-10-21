@@ -56,6 +56,8 @@ permissions:
     description: NSA
   j2mc.chat.admin.nsa.toggle:
     description: nsa
+  j2mc.chat.admin.msg:
+    description: lets user see messages sent to admin
   j2mc.chat.admin.mute:
     description: mute
   j2mc.chat.admin.muteall:
@@ -74,3 +76,4 @@ permissions:
       j2mc.chat.admin.muteall: true
       j2mc.chat.admin.muteall.override: true
       j2mc.chat.admin.shush: true
+      j2mc.chat.admin.msg: true
