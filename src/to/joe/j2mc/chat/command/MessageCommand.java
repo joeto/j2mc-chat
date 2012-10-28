@@ -44,12 +44,12 @@ public class MessageCommand extends MasterCommand {
             finalmessage = finalmessage.replace("%message", message);
             final String nsamessage = ChatColor.DARK_AQUA + "[NSA] " + finalmessage;
             for (Player plr : plugin.getServer().getOnlinePlayers()) {
-                if (plr != null && plr.hasPermission("j2mc.chat.admin.nsa") && (!plr.equals(player) || !plr.equals(to))) {
+                if(plr.equals(player) || plr.equals(to)) {
+                    plr.sendMessage(finalmessage);
+                } else if (plr != null && plr.hasPermission("j2mc.chat.admin.nsa")) {
                     plr.sendMessage(nsamessage);
                 }
             }
-            player.sendMessage(finalmessage);
-            to.sendMessage(finalmessage);
             this.plugin.lastMessage.put(to.getName(), player.getName());
             this.plugin.getLogger().info(LogColors.process(finalmessage));
         }
