@@ -44,7 +44,7 @@ public class MessageCommand extends MasterCommand {
             finalmessage = finalmessage.replace("%message", message);
             final String nsamessage = ChatColor.DARK_AQUA + "[NSA] " + finalmessage;
             for (Player plr : plugin.getServer().getOnlinePlayers()) {
-                if (plr != null && plr.hasPermission("j2mc.chat.admin.nsa") && (!plr.equals(player) || !plr.equals(to))) {
+                if (plr != null && plr.hasPermission("j2mc.chat.admin.nsa") && !(plr.equals(player) || plr.equals(to))) {
                     plr.sendMessage(nsamessage);
                 }
             }
