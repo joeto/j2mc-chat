@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -34,13 +37,17 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     public HashSet<String> mutedPlayers;
     public volatile boolean everbodyMuted = false;
     public Map<String, String> lastMessage = new HashMap<String, String>();
+    private Map<String, CapsTracker> infractions = new ConcurrentHashMap<String, CapsTracker>();
+    private double capsThreshold;
     private ThreadSafePermissionTracker muteTracker;
     private ThreadSafePermissionTracker receiveTracker;
     private ThreadSafePermissionTracker overrideTracker;
     private ThreadSafePermissionTracker sendTracker;
     private ThreadSafePermissionTracker specTracker;
+    private ThreadSafePermissionTracker capsTracker;
     private boolean redirectVanishChat;
     private boolean spectatorChat;
+    private static final Pattern ALLCAPS = Pattern.compile("[A-Z]");
 
     @Override
     public void onDisable() {
@@ -73,6 +80,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.receiveTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.receive");
         this.sendTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.send");
         this.specTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.spectator");
+        this.capsTracker = new ThreadSafePermissionTracker(this, "j2mc.chat.capsexempt");
 
         if (this.getConfig().getBoolean("enableformatinjection")) {
             for (Player player : this.getServer().getOnlinePlayers()) {
@@ -82,8 +90,9 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
             }
         }
 
-        redirectVanishChat = getConfig().getBoolean("redirectvanishchat", true);
-        spectatorChat = getConfig().getBoolean("spectatorchat", false);
+        this.redirectVanishChat = getConfig().getBoolean("redirectvanishchat", true);
+        this.spectatorChat = getConfig().getBoolean("spectatorchat", false);
+        this.capsThreshold = this.getConfig().getDouble("capsthreshold");
 
         this.mutedPlayers = new HashSet<String>();
         this.getLogger().info("Chat module enabled");
@@ -98,6 +107,31 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         if (!this.sendTracker.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
             return;
+        }
+        if (event.getMessage().length() > 10 && !this.capsTracker.hasPermission(event.getPlayer())) {
+            final Matcher matcher = J2MC_Chat.ALLCAPS.matcher(event.getMessage());
+            int caps = 0;
+            while (matcher.find()) {
+                caps++;
+            }
+            if ((double) caps / event.getMessage().length() > capsThreshold) {
+                if (!infractions.containsKey(event.getPlayer().getName())) {
+                    infractions.put(event.getPlayer().getName(), new CapsTracker(this, event.getPlayer().getName()));
+                }
+                CapsTracker tracker = infractions.get(event.getPlayer().getName());
+                tracker.infraction();
+                if (tracker.getNumInfractions() == 1) {
+                    event.getPlayer().sendMessage(ChatColor.RED + "Please do not send messages in all capital letters. Warning 1/3");
+                } else if (tracker.getNumInfractions() == 2 || tracker.getNumInfractions() == 3) {
+                    event.getPlayer().sendMessage(ChatColor.RED + "Do not send messages in all capital letters. Warning " + tracker.getNumInfractions() + "/3");
+                    event.setMessage(event.getMessage().toLowerCase());
+                } else if (tracker.getNumInfractions() > 3) {
+                    event.getPlayer().kickPlayer(ChatColor.RED + "Do not send messages in all capital letters.");
+                    J2MC_Manager.getCore().adminAndLog(ChatColor.RED + event.getPlayer().getName() + " has been kicked for a caps violation.");
+                    event.setCancelled(true);
+                    return;
+                }
+            }
         }
         if (event.isCancelled()) {
             return;

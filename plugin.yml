@@ -66,6 +66,8 @@ permissions:
     description: ignore chat
   j2mc.chat.spectator:
     description: Those without this permission will not receive chat from those with it
+  j2mc.chat.capsexempt:
+    description: This permission exempts users from caps checking
   j2mc.chat.admin:
     description: access to admin commands
     children:
@@ -74,3 +76,4 @@ permissions:
       j2mc.chat.admin.muteall: true
       j2mc.chat.admin.muteall.override: true
       j2mc.chat.admin.shush: true
+      j2mc.chat.capsexempt: true

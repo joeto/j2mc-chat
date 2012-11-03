@@ -3,3 +3,4 @@ privatemessage.format: "*white*<%from*dgray*->%to*white*> *white*%message"
 enableformatinjection: true
 redirectvanishchat: true
 spectatorchat: false
+capsthreshold: .9
