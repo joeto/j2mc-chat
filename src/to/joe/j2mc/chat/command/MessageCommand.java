@@ -8,6 +8,7 @@ import to.joe.j2mc.chat.J2MC_Chat;
 import to.joe.j2mc.core.J2MC_Core;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
+import to.joe.j2mc.core.event.MessageEvent;
 import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
 import to.joe.j2mc.core.log.LogColors;
 
@@ -26,12 +27,14 @@ public class MessageCommand extends MasterCommand {
                 player.sendMessage(ChatColor.RED + "Correct usage: /msg player message");
                 return;
             }
-            Player to;
+            Player to = null;
             try {
                 to = J2MC_Manager.getVisibility().getPlayer(args[0], player);
             } catch (final BadPlayerMatchException e) {
-                player.sendMessage(ChatColor.RED + e.getMessage());
-                return;
+                if (!args[0].equalsIgnoreCase("admin")) {
+                    player.sendMessage(ChatColor.RED + e.getMessage());
+                    return;
+                }
             }
             if (player.equals(to)) {
                 player.sendMessage(ChatColor.RED + "I think you're lonely.");
@@ -40,16 +43,26 @@ public class MessageCommand extends MasterCommand {
             final String message = J2MC_Core.combineSplit(1, args, " ");
             String finalmessage = this.plugin.privatemessage_format;
             finalmessage = finalmessage.replace("%from", player.getDisplayName());
-            finalmessage = finalmessage.replace("%to", to.getDisplayName());
+            finalmessage = finalmessage.replace("%to", (to != null ? to.getDisplayName() : "ADMIN"));
             finalmessage = finalmessage.replace("%message", message);
             final String nsamessage = ChatColor.DARK_AQUA + "[NSA] " + finalmessage;
             for (Player plr : plugin.getServer().getOnlinePlayers()) {
-                if (plr != null && plr.hasPermission("j2mc.chat.admin.nsa") && !(plr.equals(player) || plr.equals(to))) {
+                if ((plr != null) && plr.hasPermission("j2mc.chat.admin.nsa") && (!plr.equals(player) || !plr.equals(to))) {
                     plr.sendMessage(nsamessage);
                 }
             }
             player.sendMessage(finalmessage);
-            to.sendMessage(finalmessage);
+            if (to == null) {
+                for (final Player plr : this.plugin.getServer().getOnlinePlayers()) {
+                    if ((plr != null) && plr.hasPermission("j2mc.chat.admin.msg")) {
+                        plr.sendMessage(ChatColor.DARK_AQUA + "[AMSG] " + finalmessage);
+                    }
+                }
+                final String adminmessage = "[AMSG] <" + player.getName() + "> " + message;
+                this.plugin.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("ADMININFO"), adminmessage));
+            } else {
+                to.sendMessage(finalmessage);
+            }
             this.plugin.lastMessage.put(to.getName(), player.getName());
             this.plugin.getLogger().info(LogColors.process(finalmessage));
         }
