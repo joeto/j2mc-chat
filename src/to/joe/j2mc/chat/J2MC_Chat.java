@@ -92,7 +92,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
 
         this.redirectVanishChat = getConfig().getBoolean("redirectvanishchat", true);
         this.spectatorChat = getConfig().getBoolean("spectatorchat", false);
-        this.capsThreshold = this.getConfig().getDouble("capsthreshold");
+        this.capsThreshold = this.getConfig().getDouble("capsthreshold", 0.9D);
 
         this.mutedPlayers = new HashSet<String>();
         this.getLogger().info("Chat module enabled");
