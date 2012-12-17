@@ -9,13 +9,10 @@ import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
 
-public class MuteCommand extends MasterCommand {
-
-    J2MC_Chat plugin;
+public class MuteCommand extends MasterCommand<J2MC_Chat> {
 
     public MuteCommand(J2MC_Chat chat) {
         super(chat);
-        this.plugin = chat;
     }
 
     @Override

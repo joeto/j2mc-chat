@@ -8,13 +8,10 @@ import to.joe.j2mc.chat.J2MC_Chat;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 
-public class MuteallCommand extends MasterCommand {
+public class MuteallCommand extends MasterCommand<J2MC_Chat> {
 	
-	J2MC_Chat plugin;
-
     public MuteallCommand(J2MC_Chat chat) {
         super(chat);
-        this.plugin = chat;
     }
     
     @Override

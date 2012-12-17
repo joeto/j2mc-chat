@@ -11,12 +11,10 @@ import to.joe.j2mc.core.command.MasterCommand;
 import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
 import to.joe.j2mc.core.log.LogColors;
 
-public class MessageCommand extends MasterCommand {
-    J2MC_Chat plugin;
+public class MessageCommand extends MasterCommand<J2MC_Chat> {
 
     public MessageCommand(J2MC_Chat j2mc_chat) {
         super(j2mc_chat);
-        this.plugin = j2mc_chat;
     }
 
     @Override

@@ -8,13 +8,10 @@ import to.joe.j2mc.chat.J2MC_Chat;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 
-public class ShushCommand extends MasterCommand {
-
-    J2MC_Chat plugin;
+public class ShushCommand extends MasterCommand<J2MC_Chat> {
 
     public ShushCommand(J2MC_Chat chat) {
         super(chat);
-        this.plugin = chat;
     }
 
     @Override

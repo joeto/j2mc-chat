@@ -11,13 +11,10 @@ import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 import to.joe.j2mc.core.event.MessageEvent;
 
-public class MeCommand extends MasterCommand {
-
-    J2MC_Chat plugin;
+public class MeCommand extends MasterCommand<J2MC_Chat> {
 
     public MeCommand(J2MC_Chat j2mc_chat) {
         super(j2mc_chat);
-        this.plugin = j2mc_chat;
     }
 
     @Override

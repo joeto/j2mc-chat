@@ -8,7 +8,7 @@ import to.joe.j2mc.chat.J2MC_Chat;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 
-public class NSACommand extends MasterCommand{
+public class NSACommand extends MasterCommand<J2MC_Chat>{
     
     public NSACommand (J2MC_Chat chat) {
         super(chat);

@@ -9,13 +9,10 @@ import to.joe.j2mc.core.J2MC_Core;
 import to.joe.j2mc.core.command.MasterCommand;
 import to.joe.j2mc.core.log.LogColors;
 
-public class ReplyCommand extends MasterCommand {
-
-    J2MC_Chat plugin;
+public class ReplyCommand extends MasterCommand<J2MC_Chat> {
 
     public ReplyCommand(J2MC_Chat j2mc_chat) {
         super(j2mc_chat);
-        this.plugin = j2mc_chat;
     }
 
     @Override

@@ -7,13 +7,10 @@ import org.bukkit.entity.Player;
 import to.joe.j2mc.chat.J2MC_Chat;
 import to.joe.j2mc.core.command.MasterCommand;
 
-public class ListMuteCommand extends MasterCommand {
+public class ListMuteCommand extends MasterCommand<J2MC_Chat> {
 	
-	J2MC_Chat plugin;
-
     public ListMuteCommand(J2MC_Chat chat) {
         super(chat);
-        this.plugin = chat;
     }
     
     @Override
