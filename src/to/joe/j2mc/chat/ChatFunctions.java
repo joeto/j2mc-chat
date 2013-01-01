@@ -5,8 +5,7 @@ import org.bukkit.ChatColor;
 public class ChatFunctions {
 
     public static String SubstituteColors(String input) {
-        String output = null;
-        output = input.replace("*black*", ChatColor.BLACK.toString());
+        String output = input.replace("*black*", ChatColor.BLACK.toString());
         output = output.replace("*dblue*", ChatColor.DARK_BLUE.toString());
         output = output.replace("*dgreen*", ChatColor.DARK_GREEN.toString());
         output = output.replace("*darkaqua*", ChatColor.DARK_AQUA.toString());

@@ -10,22 +10,19 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  <scm>
-    <connection>scm:git:git://github.com/joeto/j2mc-chat/j2mc-chat.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/joeto/j2mc-chat/j2mc-chat.git</developerConnection>
-    <url>s://www.github.com/joeto/j2mc-chat</url>
-  </scm>
+
   <repositories>
     <repository>
       <id>bukkit-repo</id>
       <url>http://repo.bukkit.org/content/groups/public</url>
     </repository>
-    </repositories>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>org.bukkit</groupId>
-      <artifactId>craftbukkit</artifactId>
-      <version>1.1-R5-SNAPSHOT</version>
+      <artifactId>bukkit</artifactId>
+      <version>RELEASE</version>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -35,15 +32,12 @@
       <scope>compile</scope>
     </dependency>
   </dependencies>
-  
-  <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
+
   <build>
-    <directory>target</directory>
-    <outputDirectory>target/classes</outputDirectory>
     <finalName>${project.artifactId}</finalName>
     <sourceDirectory>src</sourceDirectory>
     <defaultGoal>clean install</defaultGoal>
-    
+
     <resources>
       <resource>
         <targetPath>.</targetPath>
@@ -59,29 +53,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.1</version>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Main-Class>Main</Main-Class>
-              <Implementation-Title>j2mc-chat</Implementation-Title>
-              <Implementation-Version>${describe}</Implementation-Version>
-              <Implementation-Vendor>j2</Implementation-Vendor>
-            </manifestEntries>
-          </archive>
-        </configuration>
-       </plugin>
+        <version>2.4</version>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <inherited>true</inherited>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-        </configuration>
+        <version>3.0</version>
       </plugin>
     </plugins>
   </build>
 </project>
-
