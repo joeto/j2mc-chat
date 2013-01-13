@@ -41,6 +41,12 @@ commands:
     usage: /shush
     permission: j2mc.chat.admin.shush
     permission-message: "AWOOGA"
+  rp:
+    description: Send a message to the roleplaying chat
+    usage: /rp <message>
+  rptoggle:
+    description: Toggle viewing the roleplaying chat
+    usage: /<command>
 permissions:
   j2mc.chat.send:
     default: true
@@ -74,7 +80,7 @@ permissions:
     description: access to admin commands
     children:
       j2mc.chat.admin.nsa.toggle: true
-      j2mc.chat.admin.msg true
+      j2mc.chat.admin.msg: true
       j2mc.chat.admin.mute: true
       j2mc.chat.admin.muteall: true
       j2mc.chat.admin.muteall.override: true

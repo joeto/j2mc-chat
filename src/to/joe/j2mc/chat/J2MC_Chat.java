@@ -25,6 +25,8 @@ import to.joe.j2mc.chat.command.MuteCommand;
 import to.joe.j2mc.chat.command.MuteallCommand;
 import to.joe.j2mc.chat.command.NSACommand;
 import to.joe.j2mc.chat.command.ReplyCommand;
+import to.joe.j2mc.chat.command.RpCommand;
+import to.joe.j2mc.chat.command.RpToggleCommand;
 import to.joe.j2mc.chat.command.ShushCommand;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.event.MessageEvent;
@@ -35,6 +37,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
     private String message_format;
     public String privatemessage_format;
     public HashSet<String> mutedPlayers;
+    public HashSet<String> rolePlayers;
     public volatile boolean everbodyMuted = false;
     public Map<String, String> lastMessage = new HashMap<String, String>();
     private Map<String, CapsTracker> infractions = new ConcurrentHashMap<String, CapsTracker>();
@@ -70,6 +73,8 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.getCommand("listmute").setExecutor(new ListMuteCommand(this));
         this.getCommand("reply").setExecutor(new ReplyCommand(this));
         this.getCommand("shush").setExecutor(new ShushCommand(this));
+        this.getCommand("rp").setExecutor(new RpCommand(this));
+        this.getCommand("rptoggle").setExecutor(new RpToggleCommand(this));
 
         J2MC_Manager.getPermissions().addFlagPermissionRelation("j2mc.chat.mute", 'M', true);
         J2MC_Manager.getPermissions().addFlagPermissionRelation("j2mc.chat.receive", 'S', false);
@@ -95,6 +100,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         this.capsThreshold = this.getConfig().getDouble("capsthreshold", 0.9D);
 
         this.mutedPlayers = new HashSet<String>();
+        this.rolePlayers = new HashSet<String>();
         this.getLogger().info("Chat module enabled");
     }
 
@@ -171,6 +177,7 @@ public class J2MC_Chat extends JavaPlugin implements Listener {
         if (mutedPlayers.contains(player.getName())) {
             J2MC_Manager.getPermissions().addFlag(player, 'M');
         }
+        player.sendMessage(this.rolePlayers.contains(player.getName()) ? "You are listening to RP chat. To disable: /rptoggle" : "Want to join RP chat? /rptoggle");
     }
 
     @EventHandler
