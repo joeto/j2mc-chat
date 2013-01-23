@@ -74,7 +74,7 @@ permissions:
     description: access to admin commands
     children:
       j2mc.chat.admin.nsa.toggle: true
-      j2mc.chat.admin.msg true
+      j2mc.chat.admin.msg: true
       j2mc.chat.admin.mute: true
       j2mc.chat.admin.muteall: true
       j2mc.chat.admin.muteall.override: true
