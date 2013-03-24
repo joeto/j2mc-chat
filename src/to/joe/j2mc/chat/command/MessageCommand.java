@@ -35,9 +35,10 @@ public class MessageCommand extends MasterCommand<J2MC_Chat> {
                 }
                 if (args[0].equalsIgnoreCase("admin")) {
                     for (final Player plr : this.plugin.getServer().getOnlinePlayers()) {
-                        if ((plr != null) && plr.hasPermission("j2mc.chat.admin.msg")) {
+                        if (plr.hasPermission("j2mc.chat.admin.msg")) {
                             if (!J2MC_Manager.getVisibility().isVanished(plr)) {
                                 adminAvailable = true;
+                                break;
                             }
                         }
                     }
@@ -60,8 +61,8 @@ public class MessageCommand extends MasterCommand<J2MC_Chat> {
             finalmessage = finalmessage.replace("%to", (to != null ? to.getDisplayName() : "ADMIN"));
             finalmessage = finalmessage.replace("%message", message);
             final String nsamessage = ChatColor.DARK_AQUA + "[NSA] " + finalmessage;
-            for (Player plr : plugin.getServer().getOnlinePlayers()) {
-                if ((plr != null) && plr.hasPermission("j2mc.chat.admin.nsa")) {
+            for (Player plr : this.plugin.getServer().getOnlinePlayers()) {
+                if (plr.hasPermission("j2mc.chat.admin.nsa")) {
                     if (!plr.equals(player) && !plr.equals(to)) {
                         plr.sendMessage(nsamessage);
                     }
@@ -71,7 +72,7 @@ public class MessageCommand extends MasterCommand<J2MC_Chat> {
             if (to == null) {
                 finalmessage = ChatColor.DARK_AQUA + "[AMSG] " + finalmessage;
                 for (final Player plr : this.plugin.getServer().getOnlinePlayers()) {
-                    if ((plr != null) && plr.hasPermission("j2mc.chat.admin.msg")) {
+                    if (plr.hasPermission("j2mc.chat.admin.msg")) {
                         plr.sendMessage(finalmessage);
                     }
                 }
