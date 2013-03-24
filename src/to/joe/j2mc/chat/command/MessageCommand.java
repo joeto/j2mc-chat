@@ -8,7 +8,6 @@ import to.joe.j2mc.chat.J2MC_Chat;
 import to.joe.j2mc.core.J2MC_Core;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
-import to.joe.j2mc.core.event.MessageEvent;
 import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
 import to.joe.j2mc.core.log.LogColors;
 
@@ -26,10 +25,27 @@ public class MessageCommand extends MasterCommand<J2MC_Chat> {
                 return;
             }
             Player to = null;
+            boolean adminAvailable = false;
             try {
                 to = J2MC_Manager.getVisibility().getPlayer(args[0], player);
             } catch (final BadPlayerMatchException e) {
-                if (!args[0].equalsIgnoreCase("admin")) {
+                if (args[0].equalsIgnoreCase("admin") && player.hasPermission("j2mc.chat.admin.msg")) {
+                    player.sendMessage(ChatColor.RED + "You're an admin, you don't need to message yourself!");
+                    return;
+                }
+                if (args[0].equalsIgnoreCase("admin")) {
+                    for (final Player plr : this.plugin.getServer().getOnlinePlayers()) {
+                        if ((plr != null) && plr.hasPermission("j2mc.chat.admin.msg")) {
+                            if (!J2MC_Manager.getVisibility().isVanished(plr)) {
+                                adminAvailable = true;
+                            }
+                        }
+                    }
+                    if (!adminAvailable) {
+                        player.sendMessage(ChatColor.RED + "There are no admins online. Please use /report <issue> instead.");
+                        return;
+                    }
+                } else {
                     player.sendMessage(ChatColor.RED + e.getMessage());
                     return;
                 }
@@ -59,8 +75,6 @@ public class MessageCommand extends MasterCommand<J2MC_Chat> {
                         plr.sendMessage(finalmessage);
                     }
                 }
-                final String adminmessage = "[AMSG] <" + player.getName() + "> " + message;
-                this.plugin.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("ADMININFO"), adminmessage));
             } else {
                 to.sendMessage(finalmessage);
                 this.plugin.lastMessage.put(to.getName(), player.getName());
