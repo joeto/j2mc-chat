@@ -63,8 +63,8 @@ public class MessageCommand extends MasterCommand<J2MC_Chat> {
                 this.plugin.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("ADMININFO"), adminmessage));
             } else {
                 to.sendMessage(finalmessage);
+                this.plugin.lastMessage.put(to.getName(), player.getName());
             }
-            this.plugin.lastMessage.put(to.getName(), player.getName());
             this.plugin.getLogger().info(LogColors.process(finalmessage));
         }
     }
